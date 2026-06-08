@@ -1,0 +1,258 @@
+{
+  "name": "Retail Sales Revenue Dashboard Fixed",
+  "compatibilityLevel": 1550,
+  "model": {
+    "culture": "en-US",
+    "tables": [
+      {
+        "name": "Sales",
+        "columns": [
+          {
+            "name": "OrderID",
+            "dataType": "int64",
+            "sourceColumn": "OrderID",
+            "summarizeBy": "none"
+          },
+          {
+            "name": "OrderDate",
+            "dataType": "dateTime",
+            "sourceColumn": "OrderDate",
+            "summarizeBy": "none",
+            "formatString": "Short Date"
+          },
+          {
+            "name": "OrderTime",
+            "dataType": "dateTime",
+            "sourceColumn": "OrderTime",
+            "summarizeBy": "none"
+          },
+          {
+            "name": "Quantity",
+            "dataType": "int64",
+            "sourceColumn": "Quantity",
+            "summarizeBy": "sum"
+          },
+          {
+            "name": "StoreID",
+            "dataType": "int64",
+            "sourceColumn": "StoreID",
+            "summarizeBy": "none"
+          },
+          {
+            "name": "StoreLocation",
+            "dataType": "string",
+            "sourceColumn": "StoreLocation",
+            "summarizeBy": "none"
+          },
+          {
+            "name": "City",
+            "dataType": "string",
+            "sourceColumn": "City",
+            "summarizeBy": "none"
+          },
+          {
+            "name": "Region",
+            "dataType": "string",
+            "sourceColumn": "Region",
+            "summarizeBy": "none"
+          },
+          {
+            "name": "CustomerID",
+            "dataType": "string",
+            "sourceColumn": "CustomerID",
+            "summarizeBy": "none"
+          },
+          {
+            "name": "Segment",
+            "dataType": "string",
+            "sourceColumn": "Segment",
+            "summarizeBy": "none"
+          },
+          {
+            "name": "ProductID",
+            "dataType": "int64",
+            "sourceColumn": "ProductID",
+            "summarizeBy": "none"
+          },
+          {
+            "name": "ProductCategory",
+            "dataType": "string",
+            "sourceColumn": "ProductCategory",
+            "summarizeBy": "none"
+          },
+          {
+            "name": "ProductType",
+            "dataType": "string",
+            "sourceColumn": "ProductType",
+            "summarizeBy": "none"
+          },
+          {
+            "name": "ProductName",
+            "dataType": "string",
+            "sourceColumn": "ProductName",
+            "summarizeBy": "none"
+          },
+          {
+            "name": "UnitPrice",
+            "dataType": "decimal",
+            "sourceColumn": "UnitPrice",
+            "summarizeBy": "none",
+            "formatString": "$#,0.00"
+          },
+          {
+            "name": "Revenue",
+            "dataType": "decimal",
+            "sourceColumn": "Revenue",
+            "summarizeBy": "sum",
+            "formatString": "$#,0.00"
+          },
+          {
+            "name": "EstimatedCost",
+            "dataType": "decimal",
+            "sourceColumn": "EstimatedCost",
+            "summarizeBy": "sum",
+            "formatString": "$#,0.00"
+          },
+          {
+            "name": "Profit",
+            "dataType": "decimal",
+            "sourceColumn": "Profit",
+            "summarizeBy": "sum",
+            "formatString": "$#,0.00"
+          },
+          {
+            "name": "ProfitRate",
+            "dataType": "decimal",
+            "sourceColumn": "ProfitRate",
+            "summarizeBy": "none",
+            "formatString": "0.00%"
+          },
+          {
+            "name": "Year",
+            "dataType": "int64",
+            "sourceColumn": "Year",
+            "summarizeBy": "none"
+          },
+          {
+            "name": "MonthNo",
+            "dataType": "int64",
+            "sourceColumn": "MonthNo",
+            "summarizeBy": "none"
+          },
+          {
+            "name": "MonthName",
+            "dataType": "string",
+            "sourceColumn": "MonthName",
+            "summarizeBy": "none"
+          },
+          {
+            "name": "YearMonth",
+            "dataType": "string",
+            "sourceColumn": "YearMonth",
+            "summarizeBy": "none"
+          },
+          {
+            "name": "Weekday",
+            "dataType": "string",
+            "sourceColumn": "Weekday",
+            "summarizeBy": "none"
+          },
+          {
+            "name": "Hour",
+            "dataType": "int64",
+            "sourceColumn": "Hour",
+            "summarizeBy": "none"
+          }
+        ],
+        "partitions": [
+          {
+            "name": "Sales",
+            "mode": "import",
+            "source": {
+              "type": "m",
+              "expression": [
+                "let",
+                "    Source = Csv.Document(File.Contents(\"E:\\Workspace\\Project\\Retail-Sales-Revenue-Dashboard\\data\\processed\\coffee_shop_sales_clean.csv\"), [Delimiter=\",\", Columns=25, Encoding=65001, QuoteStyle=QuoteStyle.Csv]),",
+                "    PromotedHeaders = Table.PromoteHeaders(Source, [PromoteAllScalars=true]),",
+                "    ChangedTypes = Table.TransformColumnTypes(PromotedHeaders, {",
+                "        {\"OrderID\", Int64.Type}, {\"OrderDate\", type date}, {\"OrderTime\", type time},",
+                "        {\"Quantity\", Int64.Type}, {\"StoreID\", Int64.Type}, {\"StoreLocation\", type text},",
+                "        {\"City\", type text}, {\"Region\", type text}, {\"CustomerID\", type text}, {\"Segment\", type text},",
+                "        {\"ProductID\", Int64.Type}, {\"ProductCategory\", type text}, {\"ProductType\", type text}, {\"ProductName\", type text},",
+                "        {\"UnitPrice\", Currency.Type}, {\"Revenue\", Currency.Type}, {\"EstimatedCost\", Currency.Type},",
+                "        {\"Profit\", Currency.Type}, {\"ProfitRate\", Percentage.Type}, {\"Year\", Int64.Type},",
+                "        {\"MonthNo\", Int64.Type}, {\"MonthName\", type text}, {\"YearMonth\", type text},",
+                "        {\"Weekday\", type text}, {\"Hour\", Int64.Type}",
+                "    })",
+                "in",
+                "    ChangedTypes"
+              ]
+            }
+          }
+        ],
+        "measures": [
+          {
+            "name": "Total Revenue",
+            "expression": "SUM ( Sales[Revenue] )",
+            "formatString": "$#,0.00"
+          },
+          {
+            "name": "Total Profit",
+            "expression": "SUM ( Sales[Profit] )",
+            "formatString": "$#,0.00"
+          },
+          {
+            "name": "Profit Margin",
+            "expression": "DIVIDE ( [Total Profit], [Total Revenue] )",
+            "formatString": "0.00%"
+          },
+          {
+            "name": "Total Orders",
+            "expression": "DISTINCTCOUNT ( Sales[OrderID] )",
+            "formatString": "#,0"
+          },
+          {
+            "name": "Total Quantity",
+            "expression": "SUM ( Sales[Quantity] )",
+            "formatString": "#,0"
+          },
+          {
+            "name": "Avg Order Value",
+            "expression": "DIVIDE ( [Total Revenue], [Total Orders] )",
+            "formatString": "$#,0.00"
+          },
+          {
+            "name": "Customer Count",
+            "expression": "DISTINCTCOUNT ( Sales[CustomerID] )",
+            "formatString": "#,0"
+          },
+          {
+            "name": "Avg Customer Spend",
+            "expression": "DIVIDE ( [Total Revenue], [Customer Count] )",
+            "formatString": "$#,0.00"
+          },
+          {
+            "name": "Repeat Customer",
+            "expression": "VAR CustomerOrderTable = SUMMARIZE ( Sales, Sales[CustomerID], \"OrderCount\", DISTINCTCOUNT ( Sales[OrderID] ) ) RETURN COUNTROWS ( FILTER ( CustomerOrderTable, [OrderCount] > 1 ) )",
+            "formatString": "#,0"
+          },
+          {
+            "name": "Repeat Customer Rate",
+            "expression": "DIVIDE ( [Repeat Customer], [Customer Count] )",
+            "formatString": "0.00%"
+          },
+          {
+            "name": "Profit Per Order",
+            "expression": "DIVIDE ( [Total Profit], [Total Orders] )",
+            "formatString": "$#,0.00"
+          },
+          {
+            "name": "Profit Per Unit",
+            "expression": "DIVIDE ( [Total Profit], [Total Quantity] )",
+            "formatString": "$#,0.00"
+          }
+        ]
+      }
+    ]
+  }
+}

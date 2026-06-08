@@ -1,0 +1,34 @@
+{
+  "config": "{\"version\": \"5.58\", \"settings\": {\"useNewFilterPaneExperience\": true}}",
+  "layoutOptimization": 0,
+  "sections": [
+    {
+      "name": "ExecutiveOverview",
+      "displayName": "Executive Overview",
+      "width": 1280,
+      "height": 720,
+      "visualContainers": []
+    },
+    {
+      "name": "ProductPerformance",
+      "displayName": "Product Performance",
+      "width": 1280,
+      "height": 720,
+      "visualContainers": []
+    },
+    {
+      "name": "CustomerAnalytics",
+      "displayName": "Customer Analytics",
+      "width": 1280,
+      "height": 720,
+      "visualContainers": []
+    },
+    {
+      "name": "SalesForecast",
+      "displayName": "Sales Forecast",
+      "width": 1280,
+      "height": 720,
+      "visualContainers": []
+    }
+  ]
+}
