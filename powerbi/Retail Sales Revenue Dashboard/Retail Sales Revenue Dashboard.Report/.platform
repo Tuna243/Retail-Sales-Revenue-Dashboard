@@ -1,0 +1,11 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/gitIntegration/platformProperties/2.0.0/schema.json",
+  "metadata": {
+    "type": "Report",
+    "displayName": "Retail Sales Revenue Dashboard"
+  },
+  "config": {
+    "version": "2.0",
+    "logicalId": "9ab69c58-2c81-4383-881d-3d8a5f4d477c"
+  }
+}

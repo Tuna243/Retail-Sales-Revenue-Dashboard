@@ -1,0 +1,14 @@
+{
+  "version": "0.1",
+  "connections": [
+    {
+      "details": {
+        "protocol": "file",
+        "address": {
+          "path": "E:\\Workspace\\Project\\Retail-Sales-Revenue-Dashboard\\data\\processed\\coffee_shop_sales_clean.csv"
+        }
+      },
+      "mode": "Import"
+    }
+  ]
+}

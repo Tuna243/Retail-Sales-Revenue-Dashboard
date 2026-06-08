@@ -23,7 +23,7 @@ def write_json(path: Path, payload: dict) -> None:
 
 
 def m_csv_expression() -> list[str]:
-    csv_path = str(DATA_CSV).replace("\\", "\\\\")
+    csv_path = str(DATA_CSV)
     return [
         "let",
         f'    Source = Csv.Document(File.Contents("{csv_path}"), [Delimiter=",", Columns=25, Encoding=65001, QuoteStyle=QuoteStyle.Csv]),',
@@ -444,6 +444,24 @@ def create_report_shell() -> None:
     write_json(report_dir / ".pbi" / "localSettings.json", {"version": "1.0"})
 
 
+def create_pbids_file() -> None:
+    write_json(
+        PBI_DIR / "coffee_shop_sales_clean.pbids",
+        {
+            "version": "0.1",
+            "connections": [
+                {
+                    "details": {
+                        "protocol": "file",
+                        "address": {"path": str(DATA_CSV)},
+                    },
+                    "mode": "Import",
+                }
+            ],
+        },
+    )
+
+
 def add_table(ws, start_row: int, start_col: int, dataframe: pd.DataFrame, title: str) -> tuple[int, int]:
     ws.cell(start_row, start_col, title)
     ws.cell(start_row, start_col).font = Font(bold=True, color="FFFFFF")
@@ -545,8 +563,10 @@ def main() -> None:
         raise FileNotFoundError(f"Missing processed data: {DATA_CSV}")
     create_model_bim()
     create_report_shell()
+    create_pbids_file()
     create_preview_workbook()
     print(f"Created Power BI project: {PBI_DIR / (PROJECT_NAME + '.pbip')}")
+    print(f"Created Power BI data source: {PBI_DIR / 'coffee_shop_sales_clean.pbids'}")
     print(f"Created preview workbook: {PBI_DIR / (PROJECT_NAME + ' Preview.xlsx')}")
 
 
