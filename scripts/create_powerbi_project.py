@@ -400,10 +400,8 @@ def create_report_shell() -> None:
                 {
                     "version": "5.58",
                     "themeCollection": {
-                        "customTheme": {
-                            "name": "Retail Corporate Dark Blue",
-                            "path": "../../theme_retail_corporate.json",
-                        }
+                        "baseTheme": {"name": "CY24SU06", "version": "5.58", "type": 2},
+                        "customTheme": None,
                     },
                 }
             ),
