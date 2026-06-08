@@ -2,6 +2,14 @@
 
 ## 1. Import data
 
+Fast path:
+
+1. Open `powerbi/Retail Sales Revenue Dashboard/Retail Sales Revenue Dashboard.pbip` in Power BI Desktop.
+2. Refresh the model.
+3. Save as `.pbix` if you need a single Power BI Desktop report file.
+
+Manual path:
+
 1. Open Power BI Desktop.
 2. Select `Get Data -> Text/CSV`.
 3. Choose `data/processed/coffee_shop_sales_clean.csv`.

@@ -41,11 +41,17 @@ python scripts\prepare_data.py
 ## Power BI setup
 
 1. Open Power BI Desktop.
-2. Import `data/processed/coffee_shop_sales_clean.csv`.
-3. Rename the table to `Sales`.
-4. Apply the DAX measures from `powerbi/dax_measures.dax`.
-5. Import the theme from `powerbi/theme_retail_corporate.json`.
-6. Build the report pages using `docs/dashboard_build_guide.md`.
+2. Open `powerbi/Retail Sales Revenue Dashboard/Retail Sales Revenue Dashboard.pbip`.
+3. Refresh the semantic model if Power BI asks to load data.
+4. Import the theme from `powerbi/theme_retail_corporate.json` if the theme is not applied automatically.
+5. Save as `.pbix` from Power BI Desktop when you need a single binary report file.
+
+The repository includes a Power BI Project file plus a preview workbook:
+
+- `powerbi/Retail Sales Revenue Dashboard/Retail Sales Revenue Dashboard.pbip`
+- `powerbi/Retail Sales Revenue Dashboard/Retail Sales Revenue Dashboard Preview.xlsx`
+
+The `.pbip` contains the data model, CSV import query, Date table, relationships, and DAX measures. The preview workbook mirrors the first dashboard page with KPI cards and charts for quick review outside Power BI.
 
 ## Core KPIs
 
