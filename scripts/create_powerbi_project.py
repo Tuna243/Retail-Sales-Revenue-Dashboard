@@ -131,37 +131,6 @@ def create_model_bim() -> None:
                     ],
                     "measures": measures,
                 },
-                {
-                    "name": "Date",
-                    "columns": [
-                        {"name": "Date", "dataType": "dateTime", "formatString": "Short Date"},
-                        {"name": "Year", "dataType": "int64"},
-                        {"name": "Month No", "dataType": "int64"},
-                        {"name": "Month", "dataType": "string"},
-                        {"name": "Year Month", "dataType": "string"},
-                        {"name": "Weekday", "dataType": "string"},
-                    ],
-                    "partitions": [
-                        {
-                            "name": "Date",
-                            "mode": "import",
-                            "source": {
-                                "type": "calculated",
-                                "expression": "ADDCOLUMNS ( CALENDAR ( MIN ( Sales[OrderDate] ), MAX ( Sales[OrderDate] ) ), \"Year\", YEAR ( [Date] ), \"Month No\", MONTH ( [Date] ), \"Month\", FORMAT ( [Date], \"MMM\" ), \"Year Month\", FORMAT ( [Date], \"YYYY-MM\" ), \"Weekday\", FORMAT ( [Date], \"dddd\" ) )",
-                            },
-                        }
-                    ],
-                },
-            ],
-            "relationships": [
-                {
-                    "name": "Date_OrderDate_Sales",
-                    "fromTable": "Sales",
-                    "fromColumn": "OrderDate",
-                    "toTable": "Date",
-                    "toColumn": "Date",
-                    "crossFilteringBehavior": "oneDirection",
-                }
             ],
         },
     }
@@ -189,10 +158,8 @@ def create_report_shell() -> None:
             "NativeReferenceName": name,
         }
 
-    def query(selects: list[dict], *, include_date: bool = False) -> dict:
+    def query(selects: list[dict]) -> dict:
         from_items = [{"Name": "s", "Entity": "Sales", "Type": 0}]
-        if include_date:
-            from_items.append({"Name": "d", "Entity": "Date", "Type": 0})
         return {"Version": 2, "From": from_items, "Select": selects}
 
     def visual(
@@ -271,8 +238,8 @@ def create_report_shell() -> None:
             150,
             540,
             300,
-            {"Category": [{"queryRef": "Date.Date", "active": True}], "Y": [{"queryRef": "Sales.Total Revenue"}]},
-            query([column_select("d", "Date", "Date"), total_revenue], include_date=True),
+            {"Category": [{"queryRef": "Sales.OrderDate", "active": True}], "Y": [{"queryRef": "Sales.Total Revenue"}]},
+            query([column_select("s", "Sales", "OrderDate"), total_revenue]),
             5,
         ),
         visual(
@@ -403,8 +370,8 @@ def create_report_shell() -> None:
             30,
             1130,
             620,
-            {"Category": [{"queryRef": "Date.Date", "active": True}], "Y": [{"queryRef": "Sales.Total Revenue"}]},
-            query([column_select("d", "Date", "Date"), total_revenue], include_date=True),
+            {"Category": [{"queryRef": "Sales.OrderDate", "active": True}], "Y": [{"queryRef": "Sales.Total Revenue"}]},
+            query([column_select("s", "Sales", "OrderDate"), total_revenue]),
             0,
         )
     ]

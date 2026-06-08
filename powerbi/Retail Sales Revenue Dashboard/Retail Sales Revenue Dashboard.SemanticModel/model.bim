@@ -252,56 +252,6 @@
             "formatString": "$#,0.00"
           }
         ]
-      },
-      {
-        "name": "Date",
-        "columns": [
-          {
-            "name": "Date",
-            "dataType": "dateTime",
-            "formatString": "Short Date"
-          },
-          {
-            "name": "Year",
-            "dataType": "int64"
-          },
-          {
-            "name": "Month No",
-            "dataType": "int64"
-          },
-          {
-            "name": "Month",
-            "dataType": "string"
-          },
-          {
-            "name": "Year Month",
-            "dataType": "string"
-          },
-          {
-            "name": "Weekday",
-            "dataType": "string"
-          }
-        ],
-        "partitions": [
-          {
-            "name": "Date",
-            "mode": "import",
-            "source": {
-              "type": "calculated",
-              "expression": "ADDCOLUMNS ( CALENDAR ( MIN ( Sales[OrderDate] ), MAX ( Sales[OrderDate] ) ), \"Year\", YEAR ( [Date] ), \"Month No\", MONTH ( [Date] ), \"Month\", FORMAT ( [Date], \"MMM\" ), \"Year Month\", FORMAT ( [Date], \"YYYY-MM\" ), \"Weekday\", FORMAT ( [Date], \"dddd\" ) )"
-            }
-          }
-        ]
-      }
-    ],
-    "relationships": [
-      {
-        "name": "Date_OrderDate_Sales",
-        "fromTable": "Sales",
-        "fromColumn": "OrderDate",
-        "toTable": "Date",
-        "toColumn": "Date",
-        "crossFilteringBehavior": "oneDirection"
       }
     ]
   }
