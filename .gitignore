@@ -1,0 +1,6 @@
+coffee-sales.zip
+*.tmp
+~$*.xlsx
+.DS_Store
+__pycache__/
+.pytest_cache/

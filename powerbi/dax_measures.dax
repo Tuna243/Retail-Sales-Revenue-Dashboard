@@ -1,0 +1,86 @@
+-- Table name expected in Power BI: Sales
+-- Import data/processed/coffee_shop_sales_clean.csv, then rename the query/table to Sales.
+
+Total Revenue =
+SUM ( Sales[Revenue] )
+
+Total Profit =
+SUM ( Sales[Profit] )
+
+Profit Margin =
+DIVIDE ( [Total Profit], [Total Revenue] )
+
+Total Orders =
+DISTINCTCOUNT ( Sales[OrderID] )
+
+Total Quantity =
+SUM ( Sales[Quantity] )
+
+Avg Order Value =
+DIVIDE ( [Total Revenue], [Total Orders] )
+
+Customer Count =
+DISTINCTCOUNT ( Sales[CustomerID] )
+
+Avg Customer Spend =
+DIVIDE ( [Total Revenue], [Customer Count] )
+
+Repeat Customer =
+VAR CustomerOrderTable =
+    SUMMARIZE (
+        Sales,
+        Sales[CustomerID],
+        "OrderCount", DISTINCTCOUNT ( Sales[OrderID] )
+    )
+RETURN
+    COUNTROWS ( FILTER ( CustomerOrderTable, [OrderCount] > 1 ) )
+
+Repeat Customer Rate =
+DIVIDE ( [Repeat Customer], [Customer Count] )
+
+Revenue LY =
+CALCULATE ( [Total Revenue], SAMEPERIODLASTYEAR ( 'Date'[Date] ) )
+
+Revenue MoM =
+VAR PreviousMonthRevenue =
+    CALCULATE ( [Total Revenue], DATEADD ( 'Date'[Date], -1, MONTH ) )
+RETURN
+    [Total Revenue] - PreviousMonthRevenue
+
+Revenue MoM % =
+VAR PreviousMonthRevenue =
+    CALCULATE ( [Total Revenue], DATEADD ( 'Date'[Date], -1, MONTH ) )
+RETURN
+    DIVIDE ( [Revenue MoM], PreviousMonthRevenue )
+
+Profit Per Order =
+DIVIDE ( [Total Profit], [Total Orders] )
+
+Profit Per Unit =
+DIVIDE ( [Total Profit], [Total Quantity] )
+
+Low Margin Product Flag =
+IF ( [Profit Margin] < 0.30 && [Total Revenue] > 5000, 1, 0 )
+
+Dead Product Flag =
+IF ( [Total Revenue] < 1000 && [Total Quantity] < 250, 1, 0 )
+
+Best Seller Rank =
+RANKX (
+    ALLSELECTED ( Sales[ProductName] ),
+    [Total Revenue],
+    ,
+    DESC,
+    Dense
+)
+
+-- Create date table:
+Date =
+ADDCOLUMNS (
+    CALENDAR ( MIN ( Sales[OrderDate] ), MAX ( Sales[OrderDate] ) ),
+    "Year", YEAR ( [Date] ),
+    "Month No", MONTH ( [Date] ),
+    "Month", FORMAT ( [Date], "MMM" ),
+    "Year Month", FORMAT ( [Date], "YYYY-MM" ),
+    "Weekday", FORMAT ( [Date], "dddd" )
+)
