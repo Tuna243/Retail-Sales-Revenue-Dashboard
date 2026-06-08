@@ -45,7 +45,7 @@ python scripts\prepare_data.py
 3. Click `Load`.
 4. Rename the loaded table to `Sales`.
 5. Apply the DAX measures from `powerbi/dax_measures.dax`.
-6. Build the visuals using `docs/dashboard_build_guide.md`.
+6. Build the visuals using `powerbi/REBUILD_VISUALS_QUICK.md` or `docs/dashboard_build_guide.md`.
 7. Save as `.pbix`.
 
 The repository includes a Power BI data-source shortcut plus a preview workbook:
